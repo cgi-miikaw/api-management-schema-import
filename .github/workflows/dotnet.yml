@@ -1,0 +1,37 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
+    - name: Publish for OSX
+      run: dotnet publish --output "/Release" --runtime osx-x64 --configuration Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
+    - name: Publish for Windows
+      run: dotnet publish --output "/Release" --runtime win-x64 --configuration Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
