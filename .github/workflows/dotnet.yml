@@ -20,15 +20,18 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - name: Change folder
-      run: cd ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
     - name: Build
       run: dotnet build --no-restore
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
     - name: Publish for OSX
       run: dotnet publish --output "/Release" --runtime osx-x64 --configuration Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
     - name: Publish for Windows
       run: dotnet publish --output "/Release" --runtime win-x64 --configuration Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+      working-directory: /ApiManagementSchemaImport/Microsoft.Azure.ApiManagement.WsdlProcessor.App
